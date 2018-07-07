@@ -1,7 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.utils import to_categorical
-from keras.preprocessing.image import ImageDataGenerator
 
 from PIL import Image
 
@@ -107,6 +106,8 @@ model.add(Dense(32, activation='relu', input_dim=height*weight*3)) #tweak
 model.add(Dense(num_classes, activation='softmax')) #tweak
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.fit(trainingData, trainingLabels, epochs=epochs, batch_size=batch_size, validation_data=(testingData, testingLabels)) #tweak
+
+
 
 
 # Evaluate Model Accuracy on Test data
