@@ -9,7 +9,7 @@ import numpy as np
 
 #https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
-#Parameters for a run - tweak to improve accuracy - marked by in the code #tweak
+#===========Parameters for a run - tweak to improve accuracy - marked by in the code #tweak======================
 height = 100
 weight = 100
 
@@ -21,16 +21,11 @@ batch_size = 32
 #defines how percise the perdictions need to be.
 #ie: num_classes = 10 means outputs have only 10 categories 1,2,3,4....10
 #ie: num_classes = 100 means outputs have 100 categories 1.0,1.1,1.2,1.3,...9.8,9.9, 10.0 or 1,2,3,4....100
-num_classes = 10
+num_classes = 100
 
 epochs = 10
 
-def create( infilename ) :
-    img = Image.open( infilename )
-    img = img.resize((height, weight))
-    data = np.asarray( img, dtype="int32" )
-    data = data.flatten()
-    return data
+#=================================================================================================================
 
 # Step 1 - Generates image file paths and loads scores
 def getFilePathsAndScores(gender):
@@ -73,7 +68,6 @@ def cleanUpData(listOfImageData, listOfScoreLabels):
 # Step 4 - finalize data and labels
 def finalizeInputs(listOfImageData, listOfScoreLabels):
     listOfImageData = np.array(listOfImageData)
-    listOfScoreLabels = listOfScoreLabels
     
     finalData = []
     finalScores = []
@@ -85,7 +79,6 @@ def finalizeInputs(listOfImageData, listOfScoreLabels):
     finalData = np.array(finalData)
     finalScores = np.array(finalScores)
     
-    
     finalScores = to_categorical(finalScores, num_classes=num_classes) #tweak
     
     return finalData, finalScores
@@ -93,7 +86,7 @@ def finalizeInputs(listOfImageData, listOfScoreLabels):
 
 # Step 5 - Split data into training and testing, used to train and test models
 def splitData(splitIndex, trainingData, trainingLabes):
-    return trainingData[0:splitIndex], trainingLabes[0:splitIndex], trainingData[splitIndex:], trainingLabes[splitIndex:]
+    return trainingData[0:splitIndex], trainingLabes[0:splitIndex], trainingData[splitIndex:], trainingLabes[splitIndex:] #tweak
 
 #Make each run consistent
 np.random.seed(1337)
@@ -103,28 +96,18 @@ data, labels = getFilePathsAndScores("female") #Step 1
 data, labels = loadImagesAndLabels(data, labels) #Step 2
 data, labels = cleanUpData(data, labels) #Step 3
 data, labels = finalizeInputs(data, labels) #Step 4
-trainingData, trainingLabels, testingData, testingLabels = splitData(splitIndex, data, labels) #tweak #Step 5
+
+trainingData, trainingLabels, testingData, testingLabels = splitData(splitIndex, data, labels) #Step 5
+
+## ====================End of Data Preperation===========================================
 
 # Create the Model/network
 model = Sequential()
-model.add(Dense(32, activation='relu', input_dim=height*weight*3))
-model.add(Dense(num_classes, activation='softmax'))
+model.add(Dense(32, activation='relu', input_dim=height*weight*3)) #tweak
+model.add(Dense(num_classes, activation='softmax')) #tweak
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-model.fit(trainingData, trainingLabels, epochs=epochs, batch_size=batch_size, validation_data=(testingData, testingLabels))
+model.fit(trainingData, trainingLabels, epochs=epochs, batch_size=batch_size, validation_data=(testingData, testingLabels)) #tweak
 
-# datagen = ImageDataGenerator(
-#     featurewise_center=True,
-#     featurewise_std_normalization=True,
-#     rotation_range=20,
-#     width_shift_range=0.2,
-#     height_shift_range=0.2,
-#     horizontal_flip=True)
-    
-# data_train = data_train.reshape(((1,) + data_train.shape))
-# datagen.fit(data_train)
-
-# fits the model on batches with real-time data augmentation:
-#model.fit_generator(datagen.flow(data_train, labels_train, batch_size=32),steps_per_epoch=len(data_train), epochs=epochs)
 
 # Evaluate Model Accuracy on Test data
 score = model.evaluate(testingData, testingLabels, verbose=0)
