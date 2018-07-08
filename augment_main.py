@@ -1,6 +1,7 @@
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 from keras.utils import to_categorical
+from keras.preprocessing.image import ImageDataGenerator
 
 from PIL import Image
 
@@ -9,8 +10,8 @@ import numpy as np
 #https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
 #===========Parameters for a run - tweak to improve accuracy - marked by in the code #tweak======================
-height = 100
-width = 100
+height = 10
+width = 10
 
 #Split full dataset to training and testing data, ie 0-900 for taining and 900-1000 for testing
 splitIndex = 900
@@ -39,7 +40,9 @@ def getFilePathsAndScores(gender):
             
         #read first line of each file into this stucture: [[1.2],[5.5],[9.0]]
         with open(labelPath, errors='ignore') as textFile:
-            labelsScores.append([float(textFile.readline().strip())])
+            score = textFile.readline().strip()
+            score = float(score)
+            labelsScores.append([score])
     
     return imagePaths, labelsScores
 
@@ -72,7 +75,7 @@ def finalizeInputs(listOfImageData, listOfScoreLabels):
     finalScores = []
     
     for i in range(len(listOfImageData)):
-        finalData.append(listOfImageData[i].flatten())
+        finalData.append(listOfImageData[i])
         finalScores.append(np.array(listOfScoreLabels[i]))
         
     finalData = np.array(finalData)
@@ -100,24 +103,49 @@ trainingData, trainingLabels, testingData, testingLabels = splitData(splitIndex,
 
 ## ====================End of Data Preperation===========================================
 
-# Create the Model/network
-model = Sequential()
-model.add(Dense(32, activation='relu', input_dim=height*width*3)) #tweak
-model.add(Dense(num_classes, activation='softmax')) #tweak
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-model.fit(trainingData, trainingLabels, epochs=epochs, batch_size=batch_size, validation_data=(testingData, testingLabels)) #tweak
+def model2(trainingData, trainingLabels, testingData, testingLabels):
+    
+    model = Sequential()
+    model.add(Conv2D(4, kernel_size=(3, 3),activation='relu',input_shape=(height, width, 3)))
+    model.add(Conv2D(8, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
+    model.add(Flatten())
+    model.add(Dense(16, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(num_classes, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    
+    datagen = ImageDataGenerator(
+        featurewise_center=True,
+        featurewise_std_normalization=True,
+        rotation_range=45,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        horizontal_flip=True)
+    
+    datagen.fit(trainingData)
+    
+    #fits the model on batches with real-time data augmentation:
+    model.fit_generator(
+        datagen.flow(trainingData, trainingLabels, batch_size=32),
+        steps_per_epoch=len(trainingData),
+        epochs=epochs,
+        validation_data=(testingData, testingLabels))
+    
+    return model
+
+model = model2(trainingData, trainingLabels, testingData, testingLabels)
 
 # Evaluate Model Accuracy on Test data
 score = model.evaluate(testingData, testingLabels, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
-
 #=================Make a prediction=====================================
 img = Image.open("taylor.jpg")
 img = img.resize((height, width))
 data = np.asarray( img, dtype="int32" )
-data = data.flatten()
 data = np.asarray([data])
 prediction = model.predict(data)
 for i in range(len(prediction[0])):
