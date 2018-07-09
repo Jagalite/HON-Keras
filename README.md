@@ -1,12 +1,21 @@
 # Machine Learning - TensorFlow & Keras
 
-This exmaple was created to be as minimalistic as possible. main.py should be taken and modified if your project when you want to implement something. It was written to be as modifiable as possible and very easy to understand. Most tutorials used preloaded datasets that is hard to get you started because it doesn't show how you load images, clean them and prep them for the ML models. main.py goes through all this. From loading the images, training the models, saving the training and predicting using new images. This example should provide you with the bare minimum to start a ML project in tensorflow. This uses keras, tensorflow's/Google's offial high-level ML api. https://keras.io/#installation
+This exmaple was created to be as minimalistic as possible.
+main.py should be taken and modified if your project when you want to implement something. It was written to be as modifiable as possible and very easy to understand.
+Most tutorials used preloaded datasets that is hard to get you started because it doesn't show how you load images, clean them and prep them for the ML models.
+main.py goes through all this. From loading the images, training the models, saving the training and predicting using new images. This example should provide you with the bare minimum to start a ML project in tensorflow.
+This uses keras, tensorflow's/Google's offial high-level ML api. https://keras.io/#installation
 
 ## Making Models - Dependencies
 - install python3
 - install pip3
 - pip3 install keras
 - pip3 install tensorflow
+
+## The Dataset
+Supposely compiled from hotornot.com: http://vision.cs.utexas.edu/projects/rationales/
+This dataset has profile pictures of people and their hotness scores.
+We can try to use this to train a model that can look at anyone's photo and score them of how good/bad looking they are.
 
 ## main.py
 If you are starting out in learning this stuff, a good place to start is main.py. It was written to be as easy to understand as possible as well as easily modifiable.You just need to unzip the training data in the dataset directory. Then run: python3 main.py
