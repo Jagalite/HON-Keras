@@ -10,8 +10,8 @@ import numpy as np
 #https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
 #===========Parameters for a run - tweak to improve accuracy - marked by in the code #tweak======================
-height = 10
-width = 10
+height = 32
+width = 32
 
 #Split full dataset to training and testing data, ie 0-900 for taining and 900-1000 for testing
 splitIndex = 900
@@ -142,11 +142,14 @@ score = model.evaluate(testingData, testingLabels, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
-#=================Make a prediction=====================================
-img = Image.open("taylor.jpg")
-img = img.resize((height, width))
-data = np.asarray( img, dtype="int32" )
-data = np.asarray([data])
-prediction = model.predict(data)
-for i in range(len(prediction[0])):
-    print("Score: " + str(i+1) + " - Confidence: " + '{:.1%}'.format(prediction[0][i]))
+
+##==================================Save Model=============================
+# serialize model to JSON
+model_json = model.to_json()
+with open("model.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("model.h5")
+print("Saved model to disk")
+
+
