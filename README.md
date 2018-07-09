@@ -15,13 +15,15 @@ This uses keras, tensorflow's/Google's offial high-level ML api. https://keras.i
 ## The Dataset
 Supposely compiled from hotornot.com: http://vision.cs.utexas.edu/projects/rationales/
 This dataset has profile pictures of people and their hotness scores.
-We can try to use this to train a model that can look at anyone's photo and score them of how good/bad looking they are.
+We can try to use this to train a model that can look at anyone's photo and score(1-10) them of how good/bad looking they are.
 
 ## main.py
 If you are starting out in learning this stuff, a good place to start is main.py. It was written to be as easy to understand as possible as well as easily modifiable.You just need to unzip the training data in the dataset directory. Then run: python3 main.py
 
 ## Running a more sophisticated algorithm
-augment_main.py is very similar to main.py. The augmented file will augment each photo randomly(rotate, stretch, distort) in order to deal with the low dataset size in pursuits if a better result.
+augment_main.py is very similar to main.py.
+The augmented file will augment each photo randomly(rotate, stretch, distort) in order to deal with the low dataset size in pursuits if a better result.
+https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
 # Starting a service to upload your own photos
 Please Switch off master and use branch(uploadImage) for the sections below.
