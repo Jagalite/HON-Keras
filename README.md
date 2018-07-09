@@ -15,7 +15,7 @@ This uses keras, tensorflow's/Google's offial high-level ML api. https://keras.i
 ## The Dataset
 Supposely compiled from hotornot.com: http://vision.cs.utexas.edu/projects/rationales/
 This dataset has profile pictures of people and their hotness scores.
-We can try to use this to train a model that can look at anyone's photo and score(1-10) them of how good/bad looking they are.
+We can try to use this to train a model that can look at anyone's photo and score(1-10) them on how good/bad looking they are.
 
 ## main.py
 If you are starting out in learning this stuff, a good place to start is main.py. It was written to be as easy to understand as possible as well as easily modifiable.You just need to unzip the training data in the dataset directory. Then run: python3 main.py
