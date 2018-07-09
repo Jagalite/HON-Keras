@@ -6,6 +6,8 @@ from PIL import Image
 
 import numpy as np
 
+#References
+#https://keras.io/getting-started/sequential-model-guide/
 #https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
 #===========Parameters for a run - tweak to improve accuracy - marked by in the code #tweak======================
