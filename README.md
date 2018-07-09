@@ -1,6 +1,6 @@
 # Machine Learning - TensorFlow & Keras
 
-This exmaple was created to be as minimalistic as possible. main.py should be taken and modified if your project when you want to implement something. It was written to be as modifiable as possible and very easy to understand. Most tutorials used preloaded datasets that is hard to get you started because it doesn't show how you load images, clean them and prep them for the ML models. main.py goes through all this. From loading the images, training the models, saving the training and predicting using new images. This example should provide you with the bare minimum to start a ML project in tensorflow. This uses keras, tensorflow's/Google's offial high-level ML api.
+This exmaple was created to be as minimalistic as possible. main.py should be taken and modified if your project when you want to implement something. It was written to be as modifiable as possible and very easy to understand. Most tutorials used preloaded datasets that is hard to get you started because it doesn't show how you load images, clean them and prep them for the ML models. main.py goes through all this. From loading the images, training the models, saving the training and predicting using new images. This example should provide you with the bare minimum to start a ML project in tensorflow. This uses keras, tensorflow's/Google's offial high-level ML api. https://keras.io/#installation
 
 ## Making Models - Dependencies
 - install python3
